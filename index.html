@@ -47,16 +47,27 @@
             userInfoDiv.innerHTML = `<p>No user information available</p>`;
         }
 
-        const themeBtn = document.getElementById("theme-button");
-        themeBtn.addEventListener("click", () => {
+        function toggleTheme() {
             const isDarkMode = tg.colorScheme === "dark";
-            document.body.style.backgroundColor = isDarkMode ?"#fff" : "#333";
-            document.body.style.color = isDarkMode ? "#000" : "#fff";
-            tg.setBackgroundColor(isDarkMode ? "#fff" : "#333");
-        });
 
+            document.body.style.backgroundColor = isDarkMode ? "#fff" : "#333";
+
+            document.body.style.color = isDarkMode ? "#000" : "#fff";
+
+            tg.setBackgroundColor(isDarkMode ? "#fff" : "#333");
+
+            tg.colorScheme = isDarkMode ? "light" : "dark";
+        }
+
+        document.getElementById("theme-btn").addEventListener("click", toggleTheme);
+
+        tg.onEvent("themeChanged", () => {
+            console.log("Theme changed to:", tg.colorScheme);
+            toggleTheme();
+        });
+        
         console.log("Telegram WebApp Ready: ", tg.isWebAppReady);
-        console.log("Color Scheme: ", tg.colorScheme);
+        console.log("Initial Color Scheme: ", tg.colorScheme);
     </script>
 </body>
 </html>
