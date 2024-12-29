@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testing web app</title>
+
+    <script>"https://telegram.org/js/telegram-web-app.js"</script>
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        #user-info {
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 20px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to the telegram mini app</h1>
+
+    <div id="user-info"></div>
+    <button id="theme-button">Toggle Theme</button>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        const userInfoDiv = document.getElementById("user-info");
+        const user = tg.initDataUnsafe?.user;
+        if (user) {
+            userInfoDiv.innerHTML = `
+            <p><strong>Name:</strong> ${user.first_name} ${user.last_name || ""}</p>
+            <p><strong>Username:</strong> @${user.username || "N/A"}</p> `;
+        } 
+        
+        else {
+            userInfoDiv.innerHTML = `<p>No user information available</p>`;
+        }
+
+        const themeBtn = document.getElementById("theme-button");
+        themeBtn.addEventListener("click", () => {
+            const isDarkMode = tg.colorScheme === "dark";
+            document.body.style.backgroundColor = isDarkMode ?"#fff" : "#333";
+            document.body.style.color = isDarkMode ? "#000" : "#fff";
+            tg.setBackgroundColor(isDarkMode ? "#fff" : "#333");
+        });
+
+        console.log("Telegram WebApp Ready: ", tg.isWebAppReady);
+        console.log("Color Scheme: ", tg.colorScheme);
+    </script>
+</body>
+</html>
